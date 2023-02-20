@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputTodo } from "./Componets/TodoInput";
 import { TaskAdded } from "./Componets/TodoAdd";
 import { UpdateTodo } from "./Componets/TodoUpdate";
 import "./App.css";
 
+const getItemsStorage = () => {
+  const list = localStorage.getItem("addTask");
+  const recordJSON = JSON.parse(list);
+  return recordJSON;
+};
+
 function App() {
   const [text, setText] = useState("");
-  const [addTask, setAddTask] = useState([]);
+  const [addTask, setAddTask] = useState(getItemsStorage());
   const [updateTask, setUpdateTask] = useState("");
-  const [hide, setHide] = useState(false);
-  const [error, isError] = useState("");
+
+  //get items
+
+  useEffect(() => {
+    localStorage.setItem("addTask", JSON.stringify(addTask));
+  }, [addTask]);
 
   //task input
   const taskInput = (e) => {
@@ -22,15 +32,11 @@ function App() {
       id: addTask.length === 0 ? 1 : addTask[addTask.length - 1].id + 1,
       taskName: text,
       isEdit: false,
+      isHideDelete: false,
     };
-    if (text.trim().length <= 0) {
-      isError(<h1>Please add task</h1>);
-    } else {
-      const add = [...addTask, taskN];
-      setAddTask(add);
-      setText("");
-      isError("");
-    }
+    const add = [...addTask, taskN];
+    setAddTask(add);
+    setText("");
   };
 
   //delete task
@@ -46,8 +52,18 @@ function App() {
       id: list.id,
       taskName: list.taskName,
       isEdit: list.isEdit ? true : false,
+      isHideDelete: list.isHideDelete ? true : false,
     });
-    setHide(true);
+    const hideDelete = addTask.map((task) => {
+      if (task.id === list.id) {
+        return { ...task, isHideDelete: true };
+      } else if (task.id !== list.id) {
+        return { ...task, isHideDelete: false };
+      }
+      return task;
+    });
+
+    setAddTask(hideDelete);
   };
 
   const taskUpdate = (e) => {
@@ -55,6 +71,7 @@ function App() {
       id: updateTask.id,
       taskName: e.target.value,
       isEdit: updateTask.isEdit ? true : false,
+      isHideDelete: updateTask.isHideDelete ? true : false,
     };
     setUpdateTask(newTask);
   };
@@ -66,53 +83,66 @@ function App() {
     const updateList = [...filterRecords, updateTask];
     setAddTask(updateList);
     setUpdateTask("");
-    setHide(false);
   };
 
   const cancelUpdate = () => {
     setUpdateTask("");
-    setHide(false);
+    const hideDelete = addTask.map((task) => {
+      return { ...task, isHideDelete: false };
+    });
+
+    setAddTask(hideDelete);
   };
 
   return (
     <div className="App">
-      <h1>{addTask.length}</h1>
-      {updateTask ? (
-        <>
-          <UpdateTodo
-            cancelUpdate={cancelUpdate}
-            changeItemName={changeItemName}
-            taskUpdate={taskUpdate}
-            updateTask={updateTask}
-          />
-        </>
-      ) : (
-        <>
-          <InputTodo
-            taskInput={taskInput}
-            addTaskList={addTaskList}
-            text={text}
-          />
-          <h3>{error}</h3>
-        </>
-      )}
-
-      <div
-        className="item-list"
-        id={addTask.length >= 6 ? "scroll-items" : "not active"}
-      >
-        <ul>
-          {addTask.map((list, index) => (
-            <TaskAdded
-              list={list}
-              key={index}
-              deleteTask={deleteTask}
-              edit={edit}
-              hide={hide}
-            />
-          ))}
-        </ul>
-      </div>
+      <main>
+        <div className="content">
+          <h1>{addTask.length}</h1>
+          {updateTask ? (
+            <>
+              <UpdateTodo
+                cancelUpdate={cancelUpdate}
+                changeItemName={changeItemName}
+                taskUpdate={taskUpdate}
+                updateTask={updateTask}
+              />
+            </>
+          ) : (
+            <>
+              <InputTodo
+                taskInput={taskInput}
+                addTaskList={addTaskList}
+                text={text}
+              />
+            </>
+          )}
+          <div className="parent-list">
+            <div className="item-list">
+              <table className="overflow-active">
+                <thead>
+                  <tr>
+                    <th className="header">Details</th>
+                    <th colSpan="2">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {addTask
+                    .sort((a, b) => (a.id < b.id ? -1 : 1))
+                    .map((list, index) => (
+                      <TaskAdded
+                        list={list}
+                        key={index}
+                        deleteTask={deleteTask}
+                        edit={edit}
+                      />
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
