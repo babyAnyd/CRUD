@@ -1,3 +1,5 @@
+import { FaPlus } from "react-icons/fa";
+
 export const InputTodo = ({ taskInput, addTaskList, text }) => {
   return (
     <div>
@@ -8,7 +10,9 @@ export const InputTodo = ({ taskInput, addTaskList, text }) => {
         value={text}
         onChange={taskInput}
       />
-      <button onClick={addTaskList}>Add</button>
+      <button onClick={addTaskList} className="add-icons">
+        <FaPlus />
+      </button>
     </div>
   );
 };

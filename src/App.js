@@ -132,16 +132,14 @@ function App() {
                     </tr>
                   </thead>
                   <tbody>
-                    {addTask
-                      .sort((a, b) => (a.id < b.id ? -1 : 1))
-                      .map((list, index) => (
-                        <TaskAdded
-                          list={list}
-                          key={index}
-                          deleteTask={deleteTask}
-                          edit={edit}
-                        />
-                      ))}
+                    {addTask.map((list, index) => (
+                      <TaskAdded
+                        list={list}
+                        key={index}
+                        deleteTask={deleteTask}
+                        edit={edit}
+                      />
+                    ))}
                   </tbody>
                 </table>
               </div>
