@@ -1,3 +1,5 @@
+import { FaEdit, FaCheckDouble, FaRegWindowClose } from "react-icons/fa";
+
 export const UpdateTodo = ({
   updateTask,
   taskUpdate,
@@ -12,8 +14,12 @@ export const UpdateTodo = ({
         value={updateTask && updateTask.taskName}
         onChange={(e) => taskUpdate(e)}
       />
-      <button onClick={changeItemName}>update</button>
-      <button onClick={cancelUpdate}>cancel</button>
+      <button className="update-icons" onClick={changeItemName}>
+        <FaCheckDouble />
+      </button>
+      <button className="cancel-icons" onClick={cancelUpdate}>
+        <FaRegWindowClose />
+      </button>
     </div>
   );
 };

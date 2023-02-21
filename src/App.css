@@ -4,12 +4,16 @@
   box-sizing: border-box;
 }
 
+
 .App {
   text-align: center;
-  max-width: 600px;
+  max-width: 700px;
   margin: auto;
   height: 410px;
   background-color: rgb(255, 214, 160);
+  border-radius: 20px;
+ position: relative;
+  top:100px;
 }
 
 main {
@@ -28,17 +32,17 @@ main {
   height: 30px;
   border-width: 0;
   padding: 10px;
- border-radius: 20px 0 0 20px;
 }
 
-.add-icons {
+.add-icons, .update-icons, .cancel-icons{
   width: 50px;
   height: 30px;
   border-width: 0 ;
-  border-radius: 0 20px 20px 0;
-  position: relative;
+  position: relative; 
   top: 1px;
 }
+
+
 
 
 table {
@@ -99,6 +103,10 @@ th{
 td {
  background-color: aquamarine;
  padding: 7px;
+}
+
+.task {
+  text-align: left;
 }
 
 

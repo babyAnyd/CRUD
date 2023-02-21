@@ -127,8 +127,8 @@ function App() {
                 <table>
                   <thead>
                     <tr>
-                      <th colSpan={2}>Details</th>
-                      <th colSpan={2}>Action</th>
+                      <th>Details</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
