@@ -8,6 +8,7 @@ export const UpdateTodo = ({
     <div>
       <input
         type="text"
+        className="task-add"
         value={updateTask && updateTask.taskName}
         onChange={(e) => taskUpdate(e)}
       />

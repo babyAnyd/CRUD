@@ -97,8 +97,7 @@ function App() {
   return (
     <div className="App">
       <main>
-        <div className="content">
-          <h1>{addTask.length}</h1>
+        <div className="parent-list">
           {updateTask ? (
             <>
               <UpdateTodo
@@ -117,28 +116,35 @@ function App() {
               />
             </>
           )}
-          <div className="parent-list">
-            <div className="item-list">
-              <table className="overflow-active">
-                <thead>
-                  <tr>
-                    <th className="header">Details</th>
-                    <th colSpan="2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {addTask
-                    .sort((a, b) => (a.id < b.id ? -1 : 1))
-                    .map((list, index) => (
-                      <TaskAdded
-                        list={list}
-                        key={index}
-                        deleteTask={deleteTask}
-                        edit={edit}
-                      />
-                    ))}
-                </tbody>
-              </table>
+          <div className="parent-table">
+            <div className="text">
+              <p>
+                <i>Task ---</i>
+              </p>
+            </div>
+            <div className="outer-wrapper">
+              <div className="inner-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th colSpan={2}>Details</th>
+                      <th colSpan={2}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {addTask
+                      .sort((a, b) => (a.id < b.id ? -1 : 1))
+                      .map((list, index) => (
+                        <TaskAdded
+                          list={list}
+                          key={index}
+                          deleteTask={deleteTask}
+                          edit={edit}
+                        />
+                      ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
