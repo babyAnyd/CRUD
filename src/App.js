@@ -14,6 +14,8 @@ function App() {
   const [text, setText] = useState("");
   const [addTask, setAddTask] = useState(getItemsStorage());
   const [updateTask, setUpdateTask] = useState("");
+  const [isError, setError] = useState("");
+  const [search, setSearch] = useState("");
 
   //get items
 
@@ -34,15 +36,21 @@ function App() {
       isEdit: false,
       isHideDelete: false,
     };
-    const add = [...addTask, taskN];
-    setAddTask(add);
-    setText("");
+    if (text.trim().length <= 0) {
+      setError("Please add task.");
+    } else {
+      const add = [...addTask, taskN];
+      setAddTask(add);
+      setText("");
+      setError("");
+    }
   };
 
   //delete task
   const deleteTask = (id) => {
     const deleted = addTask.filter((item) => item.id !== id);
     setAddTask(deleted);
+    setError("");
   };
 
   //edit task
@@ -64,6 +72,7 @@ function App() {
     });
 
     setAddTask(hideDelete);
+    setError("");
   };
 
   const taskUpdate = (e) => {
@@ -98,28 +107,42 @@ function App() {
     <div className="App">
       <main>
         <div className="parent-list">
-          {updateTask ? (
-            <>
-              <UpdateTodo
-                cancelUpdate={cancelUpdate}
-                changeItemName={changeItemName}
-                taskUpdate={taskUpdate}
-                updateTask={updateTask}
-              />
-            </>
-          ) : (
-            <>
-              <InputTodo
-                taskInput={taskInput}
-                addTaskList={addTaskList}
-                text={text}
-              />
-            </>
-          )}
+          <div>
+            {updateTask ? (
+              <>
+                <UpdateTodo
+                  cancelUpdate={cancelUpdate}
+                  changeItemName={changeItemName}
+                  taskUpdate={taskUpdate}
+                  updateTask={updateTask}
+                />
+              </>
+            ) : (
+              <>
+                <InputTodo
+                  taskInput={taskInput}
+                  addTaskList={addTaskList}
+                  text={text}
+                />
+              </>
+            )}
+            <input
+              type="text"
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search here..."
+              className="search"
+            />
+          </div>
           <div className="parent-table">
             <div className="text">
               <p>
-                <i>Task ---</i>
+                <i>
+                  Task:{" "}
+                  <smal>{addTask.length === 0 ? " " : addTask.length}</smal>
+                </i>
+              </p>
+              <p>
+                <span className="error">{isError}</span>
               </p>
             </div>
             <div className="outer-wrapper">
@@ -127,19 +150,33 @@ function App() {
                 <table>
                   <thead>
                     <tr>
-                      <th>Details</th>
+                      <th className="details">Details</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {addTask.map((list, index) => (
-                      <TaskAdded
-                        list={list}
-                        key={index}
-                        deleteTask={deleteTask}
-                        edit={edit}
-                      />
-                    ))}
+                    {addTask
+                      .filter((val) => {
+                        if (search === "") {
+                          return val;
+                        } else if (
+                          val.taskName
+                            .toLowerCase()
+                            .includes(search.toLowerCase())
+                        ) {
+                          return val;
+                        }
+                        return false;
+                      })
+                      .sort((a, b) => (a.id < b.id ? -1 : 1))
+                      .map((list, index) => (
+                        <TaskAdded
+                          list={list}
+                          key={index}
+                          deleteTask={deleteTask}
+                          edit={edit}
+                        />
+                      ))}
                   </tbody>
                 </table>
               </div>

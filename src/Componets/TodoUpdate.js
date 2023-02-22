@@ -1,4 +1,4 @@
-import { FaEdit, FaCheckDouble, FaRegWindowClose } from "react-icons/fa";
+import { FaCheckDouble, FaRegWindowClose } from "react-icons/fa";
 
 export const UpdateTodo = ({
   updateTask,

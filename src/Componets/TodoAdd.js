@@ -1,21 +1,32 @@
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaCheck, FaTrashAlt } from "react-icons/fa";
 
 export const TaskAdded = ({ list, deleteTask, edit }) => {
   return (
     <tr>
       <td className="task">{list.taskName}</td>
-      <td>
-        <button>Complete</button>
-        <button onClick={() => edit(list)}>
-          <FaEdit />
-        </button>
-        {list.isHideDelete ? (
-          ""
-        ) : (
-          <button onClick={() => deleteTask(list.id)}>
-            <FaTrashAlt />
-          </button>
-        )}
+      <td className="action-items">
+        <div className="action-icons">
+          <li>
+            <button>
+              <FaCheck />
+            </button>
+          </li>
+
+          <li>
+            <button onClick={() => edit(list)}>
+              <FaEdit />
+            </button>
+          </li>
+          <li>
+            {list.isHideDelete ? (
+              ""
+            ) : (
+              <button onClick={() => deleteTask(list.id)}>
+                <FaTrashAlt />
+              </button>
+            )}
+          </li>
+        </div>
       </td>
     </tr>
   );
