@@ -35,6 +35,7 @@ function App() {
       taskName: text,
       isEdit: false,
       isHideDelete: false,
+      isCompleted: false,
     };
     if (text.trim().length <= 0) {
       setError("Please add task.");
@@ -44,6 +45,17 @@ function App() {
       setText("");
       setError("");
     }
+  };
+
+  const completedTask = (id) => {
+    setAddTask(
+      addTask.map((item) => {
+        if (item.id === id) {
+          return { ...item, isCompleted: !item.isCompleted };
+        }
+        return item;
+      })
+    );
   };
 
   //delete task
@@ -61,6 +73,7 @@ function App() {
       taskName: list.taskName,
       isEdit: list.isEdit ? true : false,
       isHideDelete: list.isHideDelete ? true : false,
+      isCompleted: list.isCompleted ? true : false,
     });
     const hideDelete = addTask.map((task) => {
       if (task.id === list.id) {
@@ -175,6 +188,7 @@ function App() {
                           key={index}
                           deleteTask={deleteTask}
                           edit={edit}
+                          completedTask={completedTask}
                         />
                       ))}
                   </tbody>

@@ -1,13 +1,19 @@
 import { FaEdit, FaCheck, FaTrashAlt } from "react-icons/fa";
 
-export const TaskAdded = ({ list, deleteTask, edit }) => {
+export const TaskAdded = ({ list, deleteTask, edit, completedTask }) => {
   return (
     <tr>
-      <td className="task">{list.taskName}</td>
+      <td className="task">
+        <small
+          style={list.isCompleted ? { textDecoration: "line-through" } : null}
+        >
+          {list.taskName}
+        </small>
+      </td>
       <td className="action-items">
         <div className="action-icons">
           <li>
-            <button>
+            <button onClick={() => completedTask(list.id)}>
               <FaCheck />
             </button>
           </li>
