@@ -151,7 +151,7 @@ function App() {
               <p>
                 <i>
                   Task:{" "}
-                  <smal>{addTask.length === 0 ? " " : addTask.length}</smal>
+                  <small>{addTask.length === 0 ? " " : addTask.length}</small>
                 </i>
               </p>
               <p>
