@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
-import { InputTodo } from "./Componets/TodoInput";
-import { TaskAdded } from "./Componets/TodoAdd";
-import { UpdateTodo } from "./Componets/TodoUpdate";
+import { InputTodo } from "./Components/TodoInput";
+import { TaskAdded } from "./Components/TodoAdd";
+import { UpdateTodo } from "./Components/TodoUpdate";
 import "./App.css";
 
-const getItemsStorage = () => {
-  const list = localStorage.getItem("addTask");
-  const recordJSON = JSON.parse(list);
-  return recordJSON;
-};
+//for local storage only
+// const getItemsStorage = () => {
+//   const list = localStorage.getItem("addTask");
+//   const recordJSON = JSON.parse(list);
+//   return recordJSON;
+// };
 
 function App() {
   const [text, setText] = useState("");
-  const [addTask, setAddTask] = useState(getItemsStorage());
+  const [addTask, setAddTask] = useState([]);
   const [updateTask, setUpdateTask] = useState("");
   const [isError, setError] = useState("");
   const [search, setSearch] = useState("");
@@ -150,8 +151,8 @@ function App() {
             <div className="text">
               <p>
                 <i>
-                  Task:{" "}
-                  <small>{addTask.length === 0 ? " " : addTask.length}</small>
+                  Task
+                  <small>{addTask.length === 0 ? null : addTask.length}</small>
                 </i>
               </p>
               <p>
